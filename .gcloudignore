@@ -1,0 +1,7 @@
+__pycache__/
+node_modules/
+assets/
+scripts/
+.git/
+.gcloudignore
+.gitignore

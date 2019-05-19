@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Acha Casa :: Encontre imóveis em leilão na sua região</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/apple-icon-57x57.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/apple-icon-60x60.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/apple-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon-76x76.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/apple-icon-114x114.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/apple-icon-120x120.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/apple-icon-144x144.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/apple-icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-icon-180x180.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{% static 'img/android-icon-192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="header">
+        <button class="header-toggle" id="toggle">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30" focusable="false">
+            <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"></path>
+          </svg>
+        </button>
+        <img class="header-logo" src="{% static 'img/logo.svg' %}">
+      </div>
+      <nav class="navbar">
+        <div class="field" id="city-field">
+          <label for="city" class="field-label">Cidade</label>
+          <input type="text" id="city" name="city" class="field-control" placeholder="Pesquise uma cidade...">
+        </div>
+        <div class="field">
+          <label class="field-label">Tipo</label>
+          <select class="field-control" id="type">
+            <option value="" selected>Todos</option>
+            <option value="Apartamento">Apartamento</option>
+            <option value="Casa">Casa</option>
+            <option value="Comercial">Comercial</option>
+            <option value="Loja">Loja</option>
+            <option value="Outros">Outros</option>
+            <option value="Prédio">Prédio</option>
+            <option value="Sala">Sala</option>
+            <option value="Sobrado">Sobrado</option>
+            <option value="Terreno">Terreno</option>
+          </select>
+          <span class="field-caret">
+            <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+              <path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path>
+            </svg>
+          </span>
+        </div>
+        <div class="field">
+          <div class="field-checkbox">
+            <input class="field-checkbox-input" type="checkbox" name="unoccupied" id="unoccupied">
+            <label class="field-checkbox-label" for="unoccupied">
+              Apenas imóveis desocupados
+            </label>
+          </div>
+        </div>
+      </nav>
+      <div class="content">
+        <div class="sidebar" id="sidebar" style="display: none;">
+          <div class="sidebar-inner">
+            <div class="overlay">
+              <div class="loader">Carregando...</div>
+            </div>
+          </div>
+        </div>
+        <div class="map" id="map"></div>
+      </div>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=geometry"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+  </body>
+</html>
