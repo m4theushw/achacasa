@@ -23,6 +23,7 @@
     <link rel="manifest" href="{% static 'manifest.json' %}">
   </head>
   <body>
+    {% include '_about.html' %}
     <div class="wrapper">
       <div class="header">
         <button class="header-toggle" id="toggle">
@@ -31,6 +32,7 @@
           </svg>
         </button>
         <img class="header-logo" src="{% static 'img/logo.svg' %}">
+        <button class="header-about">Sobre</button>
       </div>
       <nav class="navbar">
         <div class="field" id="city-field">

@@ -42,10 +42,11 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
+  font-weight: normal;
 }
 
 p {
-  margin: 0;
+  margin: 0 0 20px;
   line-height: 1.4em;
 }
 
@@ -53,6 +54,7 @@ button {
   border: 0;
   padding: 0;
   outline: none;
+  cursor: pointer;
   background-color: transparent;
 }
 
@@ -129,6 +131,19 @@ button {
 
     @media(min-width: $desktop-breakpoint) {
       display: none;
+    }
+  }
+
+  &-about {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    padding: 5px 10px;
+    background-color: $accent-color;
+    color: darken($accent-color, 30%);
+
+    &:hover {
+      color: darken($accent-color, 50%);
     }
   }
 }
@@ -592,5 +607,93 @@ button {
   40% {
     box-shadow: 0 -2em;
     height: 5em;
+  }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1100;
+  transform: scale(0);
+  transition: transform .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &-show {
+    transform: scale(1);
+  }
+
+  &-header {
+    padding: 16px;
+    position: relative;
+    background-color: $primary-color;
+
+    @media(min-width: $desktop-breakpoint) {
+      padding: 32px 0;
+    }
+  }
+
+  &-title {
+    text-align: center;
+    font-size: 1.2rem;
+    opacity: .8;
+  }
+
+  &-close {
+    top: 50%;
+    right: 0;
+    opacity: .4;
+    position: absolute;
+    font-size: 1.6rem;
+    padding: 5px 10px;
+    transform: translate(-50%, -50%);
+
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+  &-dialog {
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    @media(min-width: $desktop-breakpoint) {
+      top: 50%;
+      left: 50%;
+      width: 600px;
+      height: auto;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 30px 0 rgba(0,0,0,0.6);
+    }
+  }
+
+  &-body {
+    padding: 20px;
+
+    @media(min-width: $desktop-breakpoint) {
+      padding: 40px 40px 20px;
+    }
+  }
+
+  &-backdrop {
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    position: fixed;
+    background-color: #000;
+    transition: opacity  .2s ease-in-out;
+
+    &-show {
+      opacity: .8;
+    }
   }
 }

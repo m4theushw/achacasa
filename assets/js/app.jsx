@@ -12,6 +12,7 @@ class App {
     this.initAutocomplete()
     this.initNavbar()
     this.initMap()
+    this.initAboutModal()
     this.showDetailIfNeeded()
 
     window.addEventListener('popstate', this.handleStateChange)
@@ -253,6 +254,65 @@ class App {
       this.markers[propertyId].setMap(null)
     }
     this.markers = {}
+  }
+
+  initAboutModal = () => {
+    const _ = this
+    const about = document.querySelector('.header-about')
+    const modal = document.querySelector('.modal');
+    const dialog = modal.querySelector('.modal-dialog')
+    const close = modal.querySelector('.modal-close')
+
+    about.addEventListener('click', () => {
+      _.showBackdrop()
+      _.showAboutModal()
+    })
+
+    const closeModal = () => {
+      _.hideBackdrop()
+      _.hideAboutModal()
+    }
+
+    modal.addEventListener('click', e => {
+      if (!dialog.contains(e.target)) {
+        closeModal()
+      }
+    })
+
+    close.addEventListener('click', closeModal)
+  }
+
+  showAboutModal = () => {
+    const modal = document.querySelector('.modal');
+    modal.style.display = 'block'
+
+    setTimeout(() => {
+      modal.classList.add('modal-show')
+    }, 0)
+  }
+
+  hideAboutModal = () => {
+    const modal = document.querySelector('.modal');
+    modal.classList.remove('modal-show')
+
+    setTimeout(() => {
+      modal.style.display = 'none'
+    }, 200)
+  }
+
+  showBackdrop = () => {
+    const backdrop = document.createElement('div')
+    backdrop.className = 'modal-backdrop'
+    document.body.appendChild(backdrop)
+
+    setTimeout(() => {
+      backdrop.classList.add('modal-backdrop-show')
+    }, 200)
+  }
+
+  hideBackdrop = () => {
+    const backdrop = document.body.querySelector('.modal-backdrop')
+    document.body.removeChild(backdrop)
   }
 }
 
