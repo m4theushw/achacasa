@@ -11,14 +11,11 @@ const scripts = [
   './assets/js/utils.js',
   './assets/js/autocomplete.jsx',
   './assets/js/sidebar.jsx',
-  './assets/js/app.jsx'
+  './assets/js/navbar.jsx',
+  './assets/js/app.jsx',
 ]
 
-const testFiles = [
-  'spec/setup.js',
-  'pages/static/js/*.js',
-  'spec/*_spec.js'
-]
+const testFiles = ['spec/setup.js', 'pages/static/js/*.js', 'spec/*_spec.js']
 
 const runTests = () =>
   src(testFiles)
@@ -28,9 +25,9 @@ const runTests = () =>
 const buildScripts = () =>
   src(scripts)
     .pipe(sourcemaps.init())
-      .pipe(babel())
-      .pipe(uglify())
-      .pipe(concat('app.js'))
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(concat('app.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(dest('./pages/static/js'))
 
@@ -40,8 +37,7 @@ const buildStyles = () =>
     .pipe(autoprefixer())
     .pipe(dest('./pages/static/css'))
 
-const copyImages = () =>
-  src('./assets/img/*').pipe(dest('./pages/static/img/'))
+const copyImages = () => src('./assets/img/*').pipe(dest('./pages/static/img/'))
 
 const buildAssets = parallel(buildScripts, buildStyles, copyImages)
 

@@ -9,28 +9,12 @@ class App {
     this.isDetailOpen = false
 
     this.initSidebar()
-    this.initAutocomplete()
     this.initNavbar()
     this.initMap()
     this.initAboutModal()
     this.showDetailIfNeeded()
 
     window.addEventListener('popstate', this.handleStateChange)
-  }
-
-  initNavbar = () => {
-    const typeInput = document.getElementById('type')
-    const unoccupiedCheckBox = document.getElementById('unoccupied')
-
-    typeInput.addEventListener('change', event => {
-      this.selectedType = event.target.value
-      this.updateProperties()
-    })
-
-    unoccupiedCheckBox.addEventListener('click', () => {
-      this.availableIsSelected = !this.availableIsSelected
-      this.updateProperties()
-    })
   }
 
   updateProperties = () => {
@@ -60,19 +44,6 @@ class App {
     }
   }
 
-  initAutocomplete = () => {
-    new Autocomplete(document.getElementById('city'), {
-      url: text => {
-        const textNormalized = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        return '/api/cities?search=' + textNormalized
-      },
-      onSelect: city => {
-        this.map.setCenter({ lat: city.latitude, lng: city.longitude })
-        this.map.setZoom(12);
-      }
-    })
-  }
-
   initSidebar = () => {
     const sidebarEl = document.getElementById('sidebar')
 
@@ -89,16 +60,40 @@ class App {
     document.body.addEventListener('click', e => {
       const sidebarIsOpen = sidebarEl.classList.contains('sidebar-open')
       const sidebarInner = sidebarEl.querySelector('.sidebar-inner')
-      if (e.clientX > sidebarInner.clientWidth && sidebarIsOpen && window.innerWidth < 400) {
+      if (
+        e.clientX > sidebarInner.clientWidth &&
+        sidebarIsOpen &&
+        window.innerWidth < 400
+      ) {
         this.sidebar.close()
       }
+    })
+  }
+
+  initNavbar = () => {
+    const navbarEl = document.querySelector('.navbar')
+    const navbar = new Navbar(navbarEl)
+
+    navbar.onTypeChange(type => {
+      this.selectedType = type
+      this.updateProperties()
+    })
+
+    navbar.onOccupiedChange(isChecked => {
+      this.availableIsSelected = isChecked
+      this.updateProperties()
+    })
+
+    navbar.onCityChange(city => {
+      this.map.setCenter({ lat: city.latitude, lng: city.longitude })
+      this.map.setZoom(12)
     })
   }
 
   initMap = () => {
     this.map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: -30.0346, lng: -51.2177 },
-      zoom: 10
+      zoom: 10,
     })
 
     if (navigator.geolocation) {
@@ -118,8 +113,10 @@ class App {
       return
     }
 
-    const distance = google.maps.geometry.spherical
-      .computeDistanceBetween(this.oldCenter, this.map.getCenter())
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(
+      this.oldCenter,
+      this.map.getCenter()
+    )
 
     const distanceInKm = distance / 1000
 
@@ -160,19 +157,20 @@ class App {
       position: { lat: property.latitude, lng: property.longitude },
       map: this.map,
       title: property.name,
-      icon: `/static/img/pin-${property.is_occupied ? 'red' : 'green'}.png`
+      icon: `/static/img/pin-${property.is_occupied ? 'red' : 'green'}.png`,
     })
 
     marker.addListener('click', () => {
-      this.showDetails(property.slug);
-    });
+      this.showDetails(property.slug)
+    })
 
     return marker
   }
 
   addMarkersToMap = () => {
-    const propertiesNotAddedToMap = this.filteredProperties
-      .filter(property => !this.markers.hasOwnProperty(property.id))
+    const propertiesNotAddedToMap = this.filteredProperties.filter(
+      property => !this.markers.hasOwnProperty(property.id)
+    )
 
     propertiesNotAddedToMap.forEach(property => {
       this.markers[property.id] = this.createMarker(property)
@@ -210,7 +208,9 @@ class App {
       const infowindow = (
         <div class="infowindow">
           <div class="infowindow-name">{property.name}</div>
-          <button class="infowindow-btn" onClick={this.sidebar.open}>Saiba mais</button>
+          <button class="infowindow-btn" onClick={this.sidebar.open}>
+            Saiba mais
+          </button>
         </div>
       )
 
@@ -224,7 +224,8 @@ class App {
     this.sidebar.showLoader()
 
     const iframe = document.createElement('iframe')
-    iframe.src = 'https://www1.caixa.gov.br/Simov/busca-imovel.asp?sltTipoBusca=imoveis'
+    iframe.src =
+      'https://www1.caixa.gov.br/Simov/busca-imovel.asp?sltTipoBusca=imoveis'
     iframe.style.display = 'none'
     document.body.appendChild(iframe)
 
@@ -259,7 +260,7 @@ class App {
   initAboutModal = () => {
     const _ = this
     const about = document.querySelector('.header-about')
-    const modal = document.querySelector('.modal');
+    const modal = document.querySelector('.modal')
     const dialog = modal.querySelector('.modal-dialog')
     const close = modal.querySelector('.modal-close')
 
@@ -283,7 +284,7 @@ class App {
   }
 
   showAboutModal = () => {
-    const modal = document.querySelector('.modal');
+    const modal = document.querySelector('.modal')
     modal.style.display = 'block'
 
     setTimeout(() => {
@@ -292,7 +293,7 @@ class App {
   }
 
   hideAboutModal = () => {
-    const modal = document.querySelector('.modal');
+    const modal = document.querySelector('.modal')
     modal.classList.remove('modal-show')
 
     setTimeout(() => {
@@ -316,4 +317,4 @@ class App {
   }
 }
 
-google.maps.event.addDomListener(window, 'load', () => new App)
+google.maps.event.addDomListener(window, 'load', () => new App())
