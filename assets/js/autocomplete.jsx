@@ -7,6 +7,7 @@ class Autocomplete {
   }
 
   handleKeyup = event => {
+    const _ = this
     const text = event.target.value
 
     if (text.length < 3) {
@@ -14,6 +15,23 @@ class Autocomplete {
       return
     }
 
+    if (this.timerId) {
+      clearTimeout(this.timerId)
+      this.timerId = null
+    }
+
+    this.timerId = setTimeout(() => {
+      _.fetchItemsAndRenderOptions(text)
+    }, 200)
+  }
+
+  handleClick = event => {
+    if (this.autocomplete && !this.autocomplete.contains(event.target)) {
+      this.closeDropdownIfExists()
+    }
+  }
+
+  fetchItemsAndRenderOptions = text => {
     this.fetchItems(text).then(items => {
       if (!items.length) {
         this.closeDropdownIfExists()
@@ -23,12 +41,6 @@ class Autocomplete {
       this.createDropdownIfNotExists()
       render(this.autocomplete, this.renderItems(items))
     })
-  }
-
-  handleClick = event => {
-    if (this.autocomplete && !this.autocomplete.contains(event.target)) {
-      this.closeDropdownIfExists()
-    }
   }
 
   fetchItems = text => fetchJSON(this.options.url(text))
