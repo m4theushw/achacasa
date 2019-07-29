@@ -49,29 +49,37 @@ class Sidebar {
     const numberOfProperties = properties.length
 
     if (numberOfProperties > 0) {
-      const text = numberOfProperties === 1 ?
-        '1 imóvel encontrado' : `${numberOfProperties} imóveis encontrados`
+      const text =
+        numberOfProperties === 1
+          ? '1 imóvel encontrado'
+          : `${numberOfProperties} imóveis encontrados`
 
-      render(this.element, (
+      render(
+        this.element,
         <div class="sidebar-inner">
           <div class="sidebar-content">
             <div class="sidebar-header">{text}</div>
             <ul class="results">{properties.map(this.renderResult)}</ul>
           </div>
         </div>
-      ))
+      )
     } else {
       const text = 'Nenhum imóvel encontrado nesta área.'
-      render(this.element, <div class="sidebar-inner">
-        <div class="sidebar-content">
-          <p class="empty-state">{text}</p>
+      render(
+        this.element,
+        <div class="sidebar-inner">
+          <div class="sidebar-content">
+            <p class="empty-state">{text}</p>
+          </div>
         </div>
-      </div>)
+      )
     }
   }
 
   renderResult = property => {
-    const thumb = property.thumb ? `background-image: url(${property.thumb});` : ''
+    const thumb = property.thumb
+      ? `background-image: url(${property.thumb});`
+      : ''
 
     const statusClass = property.is_occupied ? 'occupied' : 'unoccupied'
     const statusText = property.is_occupied ? 'OCUPADO' : 'DESOCUPADO'
@@ -90,7 +98,9 @@ class Sidebar {
         </div>
         <div class="results-item-body">
           <div class="results-item-name">{property.name}</div>
-          <div class="results-item-subline">{`${property.type}  ∙ ${property.city}`}</div>
+          <div class="results-item-subline">{`${property.type}  ∙ ${
+            property.city
+          }`}</div>
           <div class="results-item-value">{currencyMask(value)}</div>
         </div>
       </li>
@@ -101,39 +111,57 @@ class Sidebar {
     render(this.element, this.renderDetail(property))
   }
 
-  renderFeature = (label, value, mask) => value ? (
-    <li class="detail-feature">
-      <span class="detail-feature-label">{label}</span>
-      <span class="detail-feature-spacer"></span>
-      <span class="detail-feature-value">{typeof mask === 'function' ? mask(value) : value}</span>
-    </li>
-  ) : null
+  renderFeature = (label, value, mask) =>
+    value ? (
+      <li class="detail-feature">
+        <span class="detail-feature-label">{label}</span>
+        <span class="detail-feature-spacer" />
+        <span class="detail-feature-value">
+          {typeof mask === 'function' ? mask(value) : value}
+        </span>
+      </li>
+    ) : null
 
-  renderPhotos = photos => photos.length ? (
-    <div class="detail-photos">
-      <h2>Fotos</h2>
-      <ul>
-        {photos.map(photo => (
-          <li class="detail-photo">
-            <a href={photo} style={`background-image: url(${photo});`} target="_blank"></a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  ) : null
+  renderPhotos = photos =>
+    photos.length ? (
+      <div class="detail-photos">
+        <h2>Fotos</h2>
+        <ul>
+          {photos.map(photo => (
+            <li class="detail-photo">
+              <a
+                href={photo}
+                style={`background-image: url(${photo});`}
+                target="_blank"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : null
 
-  renderAttachments = attachments => attachments.length ? (
-    <div class="detail-attachments">
-      {attachments.map(attachment => {
-        const type = attachment.indexOf('matricula') > 0 ? 'matrícula' : 'edital'
-        const text = `Baixar ${type} do imóvel`
-        return <a class="btn" href={attachment}>{text}</a>
-      })}
-    </div>
-  ) : null
+  renderAttachments = attachments =>
+    attachments.length ? (
+      <div class="detail-attachments">
+        {attachments.map(attachment => {
+          const type =
+            attachment.indexOf('matricula') > 0 ? 'matrícula' : 'edital'
+          const text = `Baixar ${type} do imóvel`
+          return (
+            <a class="btn" href={attachment}>
+              {text}
+            </a>
+          )
+        })}
+      </div>
+    ) : null
 
   renderDetail = property => {
     const statusText = property.is_occupied ? 'Ocupado' : 'Desocupado'
+
+    const googleMapsUrl =
+      'https://www.google.com/maps/search/?api=1&query=' +
+      encodeURIComponent(property.address)
 
     return (
       <div class="sidebar-inner">
@@ -143,31 +171,60 @@ class Sidebar {
               type="button"
               onClick={this.handleBackClick}
               class="btn btn-primary"
-            >Voltar aos resultados</button>
+            >
+              Voltar aos resultados
+            </button>
           </div>
           <div class="detail">
             <div class="detail-header">
               <h1 class="detail-header-name">{property.name}</h1>
-              <div class="detail-header-subline">{`${property.type} ∙ ${property.city} ∙ ${statusText}`}</div>
+              <div class="detail-header-subline">{`${property.type} ∙ ${
+                property.city
+              } ∙ ${statusText}`}</div>
             </div>
             <div class="detail-body">
               <p>{property.description}</p>
               <ul class="detail-features">
-                {this.renderFeature('Valor de avaliação', property.evaluation_value, currencyMask)}
-                {this.renderFeature('Valor mínimo de venda', property.minimum_value, currencyMask)}
-                {this.renderFeature('Valor de venda', property.sale_value, currencyMask)}
-                {this.renderFeature('Área privativa', property.private_area, areaMask)}
-                {this.renderFeature('Área do terreno', property.site_area, areaMask)}
+                {this.renderFeature(
+                  'Valor de avaliação',
+                  property.evaluation_value,
+                  currencyMask
+                )}
+                {this.renderFeature(
+                  'Valor mínimo de venda',
+                  property.minimum_value,
+                  currencyMask
+                )}
+                {this.renderFeature(
+                  'Valor de venda',
+                  property.sale_value,
+                  currencyMask
+                )}
+                {this.renderFeature(
+                  'Área privativa',
+                  property.private_area,
+                  areaMask
+                )}
+                {this.renderFeature(
+                  'Área do terreno',
+                  property.site_area,
+                  areaMask
+                )}
                 {this.renderFeature('Quartos', property.bedrooms)}
               </ul>
               {this.renderPhotos(property.photos)}
               {this.renderAttachments(property.attachments)}
+              <a href={googleMapsUrl} class="btn btn-primary" target="_blank">
+                Abrir no Google Maps
+              </a>
               <button
                 type="button"
                 class="btn btn-accent"
                 id="btn-caixa"
                 onClick={() => this.handleCaixaClick(property)}
-              >Abrir no site da CAIXA</button>
+              >
+                Abrir no site da CAIXA
+              </button>
             </div>
           </div>
         </div>
