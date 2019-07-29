@@ -20,8 +20,9 @@ class App {
   updateProperties = () => {
     this.removeAllMarkers()
     this.updateFilteredProperties()
-    this.sidebar.showResults(this.filteredProperties)
     this.addMarkersToMap()
+    this.sidebar.setProperties(this.filteredProperties)
+    this.sidebar.showResults()
   }
 
   showDetailIfNeeded = () => {
@@ -29,7 +30,7 @@ class App {
     const matches = currentURL.match(/^\/([^\/]+)$/)
 
     if (matches) {
-      this.showDetails(matches[1])
+      this.showDetailOnSidebar(matches[1])
     }
   }
 
@@ -38,9 +39,9 @@ class App {
     const matches = currentURL.match(/^\/([^\/]+)$/)
 
     if (matches) {
-      this.showDetails(matches[1])
+      this.showDetailOnSidebar(matches[1])
     } else {
-      this.navigateToResults()
+      this.showResultsOnSidebar()
     }
   }
 
@@ -48,9 +49,9 @@ class App {
     const sidebarEl = document.getElementById('sidebar')
 
     this.sidebar = new Sidebar(sidebarEl)
-    this.sidebar.onResultClick(this.showDetails)
+    this.sidebar.onResultClick(this.showDetailOnSidebar)
     this.sidebar.onBackClick(this.handleBackClick)
-    this.sidebar.onCaixaClick(this.openCaixaSite)
+    this.sidebar.onCaixaClick(this.openCaixaWebsite)
 
     const toggleEl = document.getElementById('toggle')
     toggleEl.addEventListener('click', () => {
@@ -143,9 +144,10 @@ class App {
       this.properties = properties
       this.updateFilteredProperties()
       this.addMarkersToMap()
+      this.sidebar.setProperties(this.filteredProperties)
 
       if (!this.isDetailOpen) {
-        this.sidebar.showResults(this.filteredProperties)
+        this.sidebar.showResults()
       }
     })
 
@@ -161,7 +163,7 @@ class App {
     })
 
     marker.addListener('click', () => {
-      this.showDetails(property.slug)
+      this.showDetailOnSidebar(property.slug)
     })
 
     return marker
@@ -179,16 +181,16 @@ class App {
 
   handleBackClick = () => {
     history.pushState(null, null, '/')
-    this.navigateToResults()
+    this.showResultsOnSidebar()
   }
 
-  navigateToResults = () => {
+  showResultsOnSidebar = () => {
     this.infowindow.close()
     this.isDetailOpen = false
-    this.sidebar.showResults(this.filteredProperties)
+    this.sidebar.showResults()
   }
 
-  showDetails = slug => {
+  showDetailOnSidebar = slug => {
     const id = slug.match(/(\d+)/)[1]
 
     this.isDetailOpen = true
@@ -216,11 +218,11 @@ class App {
 
       this.infowindow.setContent(infowindow)
       this.infowindow.open(this.map, this.markers[id])
-      this.sidebar.showDetails(property)
+      this.sidebar.showDetail(property)
     })
   }
 
-  openCaixaSite = property => {
+  openCaixaWebsite = property => {
     this.sidebar.showLoader()
 
     const iframe = document.createElement('iframe')

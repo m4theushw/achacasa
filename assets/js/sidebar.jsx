@@ -2,6 +2,7 @@ class Sidebar {
   constructor(element, windowMock) {
     this.element = element
     this.window = windowMock || window
+    this.properties = []
 
     this.window.onresize = () => {
       if (this.window.innerWidth > 400) {
@@ -45,8 +46,12 @@ class Sidebar {
     this.handleCaixaClick = fn
   }
 
-  showResults(properties) {
-    const numberOfProperties = properties.length
+  setProperties = properties => {
+    this.properties = properties
+  }
+
+  showResults() {
+    const numberOfProperties = this.properties.length
 
     if (numberOfProperties > 0) {
       const text =
@@ -59,7 +64,7 @@ class Sidebar {
         <div class="sidebar-inner">
           <div class="sidebar-content">
             <div class="sidebar-header">{text}</div>
-            <ul class="results">{properties.map(this.renderResult)}</ul>
+            <ul class="results">{this.properties.map(this.renderResult)}</ul>
           </div>
         </div>
       )
@@ -107,7 +112,7 @@ class Sidebar {
     )
   }
 
-  showDetails = property => {
+  showDetail = property => {
     render(this.element, this.renderDetail(property))
   }
 
