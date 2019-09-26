@@ -8,7 +8,7 @@ from concurrent import futures
 from itertools import chain
 from bs4 import BeautifulSoup
 
-BASE_URL = 'http://www1.caixa.gov.br/Simov/'
+BASE_URL = 'https://venda-imoveis.caixa.gov.br/sistema/'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, 'data')
