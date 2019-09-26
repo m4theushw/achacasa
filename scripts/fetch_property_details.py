@@ -13,7 +13,8 @@ BASE_URL = 'https://venda-imoveis.caixa.gov.br/sistema/'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, 'data')
 DATE = datetime.date.today().strftime('%Y-%m-%d')
-DATASET_PATH = os.path.join(DATA_PATH, '{}-properties.csv'.format(DATE))
+IDS_DATASET_PATH = os.path.join(DATA_PATH, '{}-ids.csv'.format(DATE))
+PROPERTIES_DATASET_PATH = os.path.join(DATA_PATH, '{}-properties.csv'.format(DATE))
 
 session = requests.Session()
 
@@ -32,8 +33,9 @@ def fetch_property_details(id, city_id):
     features = filter(lambda span: span.a is None and span.br is None, details.find_all('span'))
     for feature in features:
       text = feature.get_text(strip=True).replace('=', ':')
-      name, value = [segment.strip() for segment in text.split(':')]
-      result[name] = value.replace('m2', '').replace('.', '').replace(',', '.')
+      if ':' in text:
+        name, value = [segment.strip() for segment in text.split(':')]
+        result[name] = value.replace('m2', '').replace('.', '').replace(',', '.')
     return result
 
   def extract_values():
@@ -60,9 +62,10 @@ def fetch_property_details(id, city_id):
   description = related_box.find_all('p')[1].get_text(strip=True).replace('Descrição:', '')
   description = re.sub(r'\s+', ' ', description)
   description = re.sub(r'\s+,', ',', description)
+  description = re.sub(r'^.', '', description)
+  description = description.strip()
 
-  now = datetime.datetime.today()
-  result = dict(name=name, address=address, description=description, fetched_at=now)
+  result = dict(name=name, address=address, description=description, city_id=city_id)
   result.update(extract_features())
   result.update(extract_values())
 
@@ -98,11 +101,16 @@ def transform_and_translate_data(properties):
   datasets = [df.drop(['Situação'], axis=1), attachments_df, photos_df]
   return pd.concat(datasets, sort=False, axis=1)
 
-def remaining_properties(properties, properties_not_saved):
-  is_not_fetched = properties['fetched_at'].isna()
-  for item in properties[is_not_fetched].itertuples():
+def remaining_properties(ids, properties, properties_not_saved):
+  for item in ids.drop(properties.index).itertuples():
     if item.Index not in properties_not_saved:
       yield item.Index, item.city_id
+
+def load_properties():
+  if os.path.exists(PROPERTIES_DATASET_PATH):
+    return pd.read_csv(PROPERTIES_DATASET_PATH, index_col=('id',))
+  else:
+    return pd.DataFrame()
 
 if __name__ == '__main__':
   page = session.get(BASE_URL + 'busca-imovel.asp', params={'sltTipoBusca': 'imoveis'})
@@ -110,12 +118,13 @@ if __name__ == '__main__':
     msg = 'Initial request failed with status code {}.'
     raise RuntimeError(msg.format(url, page.status_code))
 
-  if not os.path.exists(DATASET_PATH):
-    raise TypeError('Could not find the properties dataset.')
+  if not os.path.exists(IDS_DATASET_PATH):
+    raise TypeError('Could not find the ids dataset.')
 
-  properties = pd.read_csv(DATASET_PATH, index_col=('id'))
+  ids = pd.read_csv(IDS_DATASET_PATH, index_col=('id',))
+  properties = load_properties()
   properties_not_saved = dict()
-  properties_to_fetch = list(remaining_properties(properties, properties_not_saved))
+  properties_to_fetch = list(remaining_properties(ids, properties, properties_not_saved))
 
   while len(properties_to_fetch) > 0:
     print('{} properties to fetch'.format(len(properties_to_fetch)))
@@ -123,17 +132,23 @@ if __name__ == '__main__':
       future_to_fetch = dict((executor.submit(fetch_property_details, id, city_id), id)
                             for id, city_id in properties_to_fetch)
       for future in futures.as_completed(future_to_fetch):
-        if future.exception() is None and  future.result() is not None:
-          id = future_to_fetch[future]
+        id = future_to_fetch[future]
+        if future.exception() is not None:
+          print('{} raised an exception: {}'.format(id, future.exception()))
+        elif future.result() is not None:
           properties_not_saved[id] = future.result()
           if len(properties_not_saved) == 10:
             print('Saving information already fetched. {0} records'.format(len(properties_not_saved)))
             result_translated = transform_and_translate_data(properties_not_saved)
-            properties = properties.combine_first(result_translated)
-            properties.to_csv(DATASET_PATH)
+            properties = pd.concat([properties, result_translated], sort=False)
+            properties.to_csv(PROPERTIES_DATASET_PATH, index_label='id')
             properties_not_saved = dict()
-            properties_to_fetch = list(remaining_properties(properties, properties_not_saved))
-
-  result_translated = transform_and_translate_data(properties_not_saved)
-  properties = properties.combine_first(result_translated)
-  properties.to_csv(DATASET_PATH)
+            properties_to_fetch = list(remaining_properties(ids, properties, properties_not_saved))
+    
+    if len(properties_not_saved) > 0:
+      print('Saving remaining properties. {0} records'.format(len(properties_not_saved)))
+      result_translated = transform_and_translate_data(properties_not_saved)
+      properties = pd.concat([properties, result_translated], sort=False)
+      properties.to_csv(PROPERTIES_DATASET_PATH, index_label='id')
+      properties_not_saved = dict()
+      properties_to_fetch = list(remaining_properties(ids, properties, properties_not_saved))
