@@ -12,10 +12,10 @@ BASE_URL = 'https://venda-imoveis.caixa.gov.br/sistema/'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_PATH = os.path.join(BASE_DIR, 'data')
-TEMP_DATASET_PATH = os.path.join(DATA_PATH, 'properties-partial.csv')
+TEMP_DATASET_PATH = os.path.join(DATA_PATH, 'ids-partial.csv')
 DATE = datetime.date.today().strftime('%Y-%m-%d')
 CITY_DATASET_PATH = os.path.join(DATA_PATH, '{}-cities.csv'.format(DATE))
-PROPERTY_DATASET_PATH = os.path.join(DATA_PATH, '{}-properties.csv'.format(DATE))
+PROPERTY_DATASET_PATH = os.path.join(DATA_PATH, '{}-ids.csv'.format(DATE))
 
 session = requests.Session()
 
@@ -30,7 +30,7 @@ def load_temp_dataset():
   if os.path.exists(TEMP_DATASET_PATH):
     return pd.read_csv(TEMP_DATASET_PATH)
   else:
-    return pd.DataFrame(columns=['id', 'city_id', 'fetched_at'])
+    return pd.DataFrame(columns=['id', 'city_id'])
 
 def load_cities():
   if not os.path.exists(CITY_DATASET_PATH):
