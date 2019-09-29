@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#k&3a%n3*y)ou6y^ry$su)k$p9@mfog)u6pb+o+a6hlomckz-h'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False)
@@ -30,7 +30,6 @@ DEBUG = config('DEBUG', default=False)
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'achacasa.appspot.com',
     'achacasa.online',
     'www.achacasa.online'
 ]
@@ -86,7 +85,7 @@ WSGI_APPLICATION = 'main.app'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'HOST': config('DB_HOST'),
         'USER': config('DB_USER'),
         'NAME': config('DB_NAME'),
