@@ -137,18 +137,14 @@ if __name__ == '__main__':
           print('{} raised an exception: {}'.format(id, future.exception()))
         elif future.result() is not None:
           properties_not_saved[id] = future.result()
-          if len(properties_not_saved) == 10:
+          if len(properties_not_saved) == 30:
             print('Saving information already fetched. {0} records'.format(len(properties_not_saved)))
             result_translated = transform_and_translate_data(properties_not_saved)
             properties = pd.concat([properties, result_translated], sort=False)
             properties.to_csv(PROPERTIES_DATASET_PATH, index_label='id')
             properties_not_saved = dict()
             properties_to_fetch = list(remaining_properties(ids, properties, properties_not_saved))
-    
-    if len(properties_not_saved) > 0:
-      print('Saving remaining properties. {0} records'.format(len(properties_not_saved)))
-      result_translated = transform_and_translate_data(properties_not_saved)
-      properties = pd.concat([properties, result_translated], sort=False)
-      properties.to_csv(PROPERTIES_DATASET_PATH, index_label='id')
-      properties_not_saved = dict()
-      properties_to_fetch = list(remaining_properties(ids, properties, properties_not_saved))
+
+  result_translated = transform_and_translate_data(properties_not_saved)
+  properties = pd.concat([properties, result_translated], sort=False)
+  properties.to_csv(PROPERTIES_DATASET_PATH, index_label='id')
