@@ -54,27 +54,20 @@ class Sidebar {
     const numberOfProperties = this.properties.length
 
     if (numberOfProperties > 0) {
-      const text =
-        numberOfProperties === 1
-          ? '1 imóvel encontrado'
-          : `${numberOfProperties} imóveis encontrados`
-
       render(
         this.element,
         <div class="sidebar-inner">
           <div class="sidebar-content">
-            <div class="sidebar-header">{text}</div>
             <ul class="results">{this.properties.map(this.renderResult)}</ul>
           </div>
         </div>
       )
     } else {
-      const text = 'Nenhum imóvel encontrado nesta área.'
       render(
         this.element,
         <div class="sidebar-inner">
           <div class="sidebar-content">
-            <p class="empty-state">{text}</p>
+            <p class="empty-state">Nenhum imóvel encontrado nesta área.</p>
           </div>
         </div>
       )
@@ -103,9 +96,7 @@ class Sidebar {
         </div>
         <div class="results-item-body">
           <div class="results-item-name">{property.name}</div>
-          <div class="results-item-subline">{`${property.type}  ∙ ${
-            property.city
-          }`}</div>
+          <div class="results-item-subline">{`${property.type}  ∙ ${property.city}`}</div>
           <div class="results-item-value">{currencyMask(value)}</div>
         </div>
       </li>
@@ -183,9 +174,7 @@ class Sidebar {
           <div class="detail">
             <div class="detail-header">
               <h1 class="detail-header-name">{property.name}</h1>
-              <div class="detail-header-subline">{`${property.type} ∙ ${
-                property.city
-              } ∙ ${statusText}`}</div>
+              <div class="detail-header-subline">{`${property.type} ∙ ${property.city} ∙ ${statusText}`}</div>
             </div>
             <div class="detail-body">
               <p>{property.description}</p>
