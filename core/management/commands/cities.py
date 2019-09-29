@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = 'Imports the cities dataset'
 
     def add_arguments(self, parser):
-        parser.add_argument('dataset', help='Path to the .xz dataset')
+        parser.add_argument('dataset', help='Path to the .csv dataset')
 
     def handle(self, *args, **options):
         print('Deleting all existing records')
@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
         cities = []
         path = options['dataset']
-        with open(path, mode='rt', encoding='utf-8') as file_handler:
+        with open(path, mode='r') as file_handler:
             for row in csv.DictReader(file_handler):
                 obj = City(**{k: self.serialize(v) for k, v in row.items()})
                 cities.append(obj)

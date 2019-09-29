@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = 'Imports the properties dataset'
 
     def add_arguments(self, parser):
-        parser.add_argument('dataset', help='Path to the .xz dataset')
+        parser.add_argument('dataset', help='Path to the .csv dataset')
 
     def handle(self, *args, **options):
         print('Deleting all existing records')
@@ -16,7 +16,7 @@ class Command(BaseCommand):
         keys = [f.name for f in Property._meta.fields]
         cities = {str(city.id): city for city in City.objects.all()}
 
-        with open(path, 'rt', encoding='utf-8') as file_handler:
+        with open(path, 'r') as file_handler:
             for row in csv.DictReader(file_handler):
                 filtered = {k: v for k, v in row.items() if k in keys}
                 obj = Property(**self.serialize(filtered))
@@ -29,7 +29,7 @@ class Command(BaseCommand):
                 for photo in self.extract_photos(row):
                     obj.photos.create(url=photo)
 
-    print('{:,} objects created'.format(Property.objects.count()))
+        print('{:,} objects created'.format(Property.objects.count()))
 
     def extract_attachments(self, row):
         for num in range(0, 100):
