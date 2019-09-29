@@ -40,7 +40,7 @@ class PropertyListView(ListAPIView):
             'longitude__lte': lonMax if lonMin < lonMax else lonMin
         }
 
-        return Property.objects.filter(**filters).prefetch_related('photos', 'city')
+        return Property.objects.filter(**filters).prefetch_related('photos', 'city')[:100]
 
 class PropertyDetailView(RetrieveAPIView):
     queryset = Property.objects.all()
