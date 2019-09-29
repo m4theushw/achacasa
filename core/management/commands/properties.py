@@ -56,14 +56,12 @@ class Command(BaseCommand):
         return row
 
     def to_boolean(self, value):
-        if len(value.lower()) == 0:
+        if len(value) == 0:
             return None
-
-        return self.to_number(value) > 0
+        return value.lower() == 'true'
 
     def to_number(self, value, cast=None):
         if len(value.lower()) == 0:
             return None
-
         number = float(value)
         return cast(number) if cast else number
