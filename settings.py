@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
     'www.achacasa.online'
 ]
 
+USE_X_FORWARDED_HOST = True
 
 # Application definition
 
