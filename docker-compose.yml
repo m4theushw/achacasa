@@ -3,36 +3,16 @@ version: '3.1'
 services:
   db:
     image: mariadb
-    restart: always
     environment:
-      MYSQL_DATABASE: achacasa
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: ${DB_USER}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
       - dbdata:/var/lib/mysql
 
-  nginx:
-    image: nginx
-    restart: always
-    ports:
-      - '8000:8000'
-    volumes:
-      - ./config:/etc/nginx/conf.d
-      - ./static:/static
-    depends_on:
-      - web
-
-  web:
-    build: .
-    restart: always
-    command: python manage.py runserver 0.0.0.0:8000
-    depends_on:
-      - db
-    expose:
-      - '8000'
-
   adminer:
     image: adminer
-    restart: always
     ports:
       - '8080:8080'
     links:
