@@ -14,7 +14,7 @@ TEMP_PATH = os.path.join(DATA_PATH, 'cities')
 DATE = datetime.date.today().strftime('%Y-%m-%d')
 DATASET_PATH = os.path.join(DATA_PATH, '{}-cities.csv'.format(DATE))
 
-geolocator = GoogleV3(config('GEOCODE_API_KEY'))
+geolocator = GoogleV3(config('GOOGLE_GEOCODE_API_KEY'))
 
 def geocode_city(city):
   try:

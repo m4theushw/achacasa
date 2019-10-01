@@ -16,7 +16,7 @@ PROPERTY_DATASET_PATH = os.path.join(DATA_PATH, '{}-properties.csv'.format(DATE)
 CITY_DATASET_PATH = os.path.join(DATA_PATH, '{}-cities.csv'.format(DATE))
 STATES = ['RS']
 
-geolocator = GoogleV3(config('GEOCODE_API_KEY'))
+geolocator = GoogleV3(config('GOOGLE_GEOCODE_API_KEY'))
 
 def geocode_property(property):
   try:
