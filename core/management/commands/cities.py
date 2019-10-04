@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
         cities = []
         path = options['dataset']
-        with open(path, mode='r') as file_handler:
+        with open(path, mode='r', encoding='utf-8') as file_handler:
             for row in csv.DictReader(file_handler):
                 obj = City(**{k: self.serialize(v) for k, v in row.items()})
                 cities.append(obj)

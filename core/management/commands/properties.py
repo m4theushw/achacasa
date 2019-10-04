@@ -16,7 +16,7 @@ class Command(BaseCommand):
         keys = [f.name for f in Property._meta.fields]
         cities = {str(city.id): city for city in City.objects.all()}
 
-        with open(path, 'r') as file_handler:
+        with open(path, mode='r', encoding='utf-8') as file_handler:
             for row in csv.DictReader(file_handler):
                 filtered = {k: v for k, v in row.items() if k in keys}
                 obj = Property(**self.serialize(filtered))
