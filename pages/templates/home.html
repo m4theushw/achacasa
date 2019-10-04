@@ -80,6 +80,7 @@
       </div>
     </div>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=geometry"></script>
-    <script src="{% static 'js/app.js' %}"></script>
+    {% if debug is True %}<script src="//localhost:35729/livereload.js"></script>{% endif %}
+    <script src="{% static 'bundle.js' %}"></script>
   </body>
 </html>
