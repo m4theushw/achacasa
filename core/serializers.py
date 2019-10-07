@@ -15,18 +15,10 @@ class CitySerializer(serializers.ModelSerializer):
     def get_label(self, obj):
         return obj.name + ' - ' + obj.state
 
-class PropertyListSerializer(serializers.ModelSerializer):
-    city = serializers.StringRelatedField()
-    thumb = serializers.SerializerMethodField()
-
+class MarkerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
-        fields = ('id', 'name', 'city', 'thumb', 'slug',  'latitude', 'longitude',
-                    'type', 'is_occupied', 'sale_value', 'minimum_value', 'evaluation_value')
-
-    def get_thumb(self, obj):
-        photos = obj.photos.all()
-        return photos[0].url if len(photos) > 0 else None
+        fields = ('id', 'name', 'slug',  'latitude', 'longitude', 'type', 'is_occupied')
 
 class PropertyDetailSerializer(serializers.ModelSerializer):
     attachments = serializers.SlugRelatedField(
