@@ -33,6 +33,7 @@ class Property(models.Model):
     is_occupied = models.BooleanField(null=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=150, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = 'properties'
