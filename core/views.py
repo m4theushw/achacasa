@@ -7,7 +7,7 @@ from django.db.models import Count
 from .models import City, Property
 from .serializers import (
     CitySerializer,
-    PropertyListSerializer,
+    MarkerListSerializer,
     PropertyDetailSerializer
 )
 
@@ -24,8 +24,8 @@ class CityListView(ListAPIView):
             cities = City.objects.filter(name__contains=search.upper())
         return cities.order_by('name')[:10]
 
-class PropertyListView(ListAPIView):
-    serializer_class = PropertyListSerializer
+class MarkerListView(ListAPIView):
+    serializer_class = MarkerListSerializer
 
     def get_queryset(self):
         latMin = float(self.kwargs['lat_min'])
