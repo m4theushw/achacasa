@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">
     <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/apple-icon-57x57.png' %}">
     <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/apple-icon-60x60.png' %}">
     <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/apple-icon-72x72.png' %}">
@@ -20,7 +19,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'manifest.json' %}">
   </head>
   <body>
     {% include '_about.html' %}
@@ -69,10 +67,55 @@
         </div>
       </nav>
       <div class="content">
-        <div class="sidebar" id="sidebar" style="display: none;">
+        <div class="sidebar sidebar-open" id="sidebar">
           <div class="sidebar-inner">
-            <div class="overlay">
-              <div class="loader">Carregando...</div>
+            <div class="sidebar-content">
+              <ul class="results">
+                <li class="results-item">
+                  <div class="results-item-name">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                  <div class="results-item-subline">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                  <div class="results-item-value">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                </li>
+                <li class="results-item">
+                  <div class="results-item-name">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                  <div class="results-item-subline">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                  <div class="results-item-value">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                </li>
+                <li class="results-item">
+                  <div class="results-item-name">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                  <div class="results-item-subline">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                  <div class="results-item-value">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                </li>
+                <li class="results-item">
+                  <div class="results-item-name">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                  <div class="results-item-subline">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                  <div class="results-item-value">
+                    <span class="skeleton">&nbsp;</span>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

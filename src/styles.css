@@ -266,6 +266,12 @@ button {
   padding: 16px 12px;
   border-bottom: 1px solid #d6d6d6;
   cursor: pointer;
+  position: relative;
+}
+
+.results-item-name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .results-item-name,
@@ -280,21 +286,21 @@ button {
 }
 
 .results-item-status {
-  bottom: 0;
-  width: 100%;
+  bottom: 16px;
+  right: 16px;
   color: #fff;
   font-size: 0.6rem;
   font-weight: bold;
   position: absolute;
   text-align: center;
-  line-height: 24px;
+  padding: 4px;
 }
 
-.results-item-unoccupied .results-item-status {
+.results-item-status.unoccupied {
   background-color: #41b041;
 }
 
-.results-item-occupied .results-item-status {
+.results-item-status.occupied {
   background-color: #b04141;
 }
 
