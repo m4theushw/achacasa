@@ -81,6 +81,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.app'
 
+SILENCED_SYSTEM_CHECKS = ['rest_framework.W001']
+
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -142,7 +144,9 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesSto
 # Django REST Framework
 
 REST_FRAMEWORK = {
-    'COERCE_DECIMAL_TO_STRING': False
+    'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_PAGINATION_CLASS': None,
+    'PAGE_SIZE': 10
 }
 
 # Google

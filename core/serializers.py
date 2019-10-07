@@ -20,6 +20,14 @@ class MarkerListSerializer(serializers.ModelSerializer):
         model = Property
         fields = ('id', 'name', 'slug',  'latitude', 'longitude', 'type', 'is_occupied')
 
+class PropertyListSerializer(serializers.ModelSerializer):
+    city = serializers.StringRelatedField()
+
+    class Meta:
+        model = Property
+        fields = ('id', 'name', 'slug',  'latitude', 'longitude', 'type', 'city',
+                  'is_occupied', 'evaluation_value','minimum_value','sale_value')
+
 class PropertyDetailSerializer(serializers.ModelSerializer):
     attachments = serializers.SlugRelatedField(
         many = True,
