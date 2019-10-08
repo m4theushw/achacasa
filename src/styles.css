@@ -219,6 +219,26 @@ button {
   border-bottom: 1px solid #d6d6d6;
 }
 
+.sidebar-footer {
+  padding: 12px;
+  text-align: center;
+}
+
+.sidebar-footer-arrow {
+  padding: 5px 10px;
+  opacity: 0.6;
+  font-size: 1rem;
+}
+
+.sidebar-footer-arrow:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.sidebar-footer-arrow:hover {
+  opacity: 1;
+}
+
 @media (min-width: 600px) {
   .sidebar-inner {
     width: auto;
@@ -272,6 +292,7 @@ button {
 .results-item-name {
   white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .results-item-name,

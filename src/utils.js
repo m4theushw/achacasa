@@ -25,6 +25,8 @@ export const jsxToDom = (element, props, ...children) => {
       const eventName = key.match(/^on([A-Z]\w+)$/);
       if (eventName) {
         el.addEventListener(eventName[1].toLowerCase(), props[key]);
+      } else if (typeof props[key] === 'boolean') {
+        el[key] = props[key];
       } else {
         el.setAttribute(key, props[key]);
       }

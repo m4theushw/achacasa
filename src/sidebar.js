@@ -24,19 +24,37 @@ class Sidebar {
   };
 
   renderResults = () => {
-    const { results } = this.page;
+    const { results, next, previous } = this.page;
 
     render(
       this.element,
-      <div class="sidebar-inner">
-        <div class="sidebar-content">
-          {results.length ? (
-            <ul class="results">{results.map(this.renderResult)}</ul>
-          ) : (
-            <p class="empty-state">Nenhum imóvel encontrado nesta área.</p>
-          )}
+      results.length ? (
+        <div>
+          <ul class="results">{results.map(this.renderResult)}</ul>
+          <div class="sidebar-footer">
+            <button
+              class="sidebar-footer-arrow"
+              type="button"
+              alt="Anterior"
+              disabled={!previous}
+              onClick={this.prevPage}
+            >
+              <i class="fas fa-chevron-left" />
+            </button>
+            <button
+              class="sidebar-footer-arrow"
+              type="button"
+              alt="Próxima"
+              disabled={!next}
+              onClick={this.nextPage}
+            >
+              <i class="fas fa-chevron-right" />
+            </button>
+          </div>
         </div>
-      </div>
+      ) : (
+        <p class="empty-state">Nenhum imóvel encontrado nesta área.</p>
+      )
     );
   };
 
@@ -52,10 +70,22 @@ class Sidebar {
       <li class="results-item">
         <span class={`results-item-status ${statusClass}`}>{statusText}</span>
         <div class="results-item-name">{property.name}</div>
-        <div class="results-item-subline">{`${property.type} ∙ ${property.city}`}</div>
+        <div class="results-item-subline">{`${property.type} ∙ ${
+          property.city
+        }`}</div>
         <div class="results-item-value">{currency(value)}</div>
       </li>
     );
+  };
+
+  prevPage = async () => {
+    this.page = await fetchJSON(this.page.previous);
+    this.renderResults();
+  };
+
+  nextPage = async () => {
+    this.page = await fetchJSON(this.page.next);
+    this.renderResults();
   };
 }
 
