@@ -7,6 +7,7 @@ import Store from './store';
 import { jsxToDom } from './utils';
 import reducer from './reducer';
 import './styles.css';
+import './fontawesome.css';
 
 window.jsxToDom = jsxToDom;
 

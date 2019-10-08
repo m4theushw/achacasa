@@ -19,6 +19,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
   </head>
   <body>
     {% include '_about.html' %}
@@ -67,9 +68,9 @@
         </div>
       </nav>
       <div class="content">
-        <div class="sidebar sidebar-open" id="sidebar">
+        <div class="sidebar sidebar-open">
           <div class="sidebar-inner">
-            <div class="sidebar-content">
+            <div class="sidebar-content" id="sidebar">
               <ul class="results">
                 <li class="results-item">
                   <div class="results-item-name">
