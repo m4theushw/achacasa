@@ -214,9 +214,16 @@ button {
 }
 
 .sidebar-header {
-  padding: 12px;
-  text-align: center;
+  padding: 12px 6px;
+  display: flex;
+  justify-content: space-between;
   border-bottom: 1px solid #d6d6d6;
+}
+
+.sidebar-header button {
+  padding: 2px 6px;
+  font-size: 1rem;
+  color: #11918e;
 }
 
 .sidebar-footer {
