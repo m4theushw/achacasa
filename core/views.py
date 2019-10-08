@@ -1,7 +1,8 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
-from rest_framework import filters, pagination
+from rest_framework.pagination import CursorPagination
+from rest_framework import filters
 from django.db.models import Count
 
 from .models import City, Property
@@ -47,9 +48,12 @@ class MarkerListView(ListAPIView):
         filters = build_filters(**self.kwargs)
         return Property.objects.filter(**filters)[:100]
 
+class PropertyPagination(CursorPagination):
+    ordering = '-id'
+
 class PropertyListView(ListAPIView):
     serializer_class = PropertyListSerializer
-    pagination_class = pagination.CursorPagination
+    pagination_class = PropertyPagination
 
     def get_queryset(self):
         filters = build_filters(**self.kwargs)
