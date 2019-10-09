@@ -1,6 +1,6 @@
 class Store {
   constructor(reducer) {
-    this.listeners = [];
+    this.listeners = {};
     this.state = {};
     this.reducer = reducer;
   }
@@ -12,13 +12,18 @@ class Store {
 
     this.state = this.reducer(this.state, action);
 
-    this.listeners.forEach(listener => {
-      listener(action);
-    });
+    if (action.type in this.listeners) {
+      this.listeners[action.type].forEach(listener => {
+        listener(action);
+      });
+    }
   };
 
-  subscribe = listener => {
-    this.listeners.push(listener);
+  on = (action, listener) => {
+    if (!(action in this.listeners)) {
+      this.listeners[action] = [];
+    }
+    this.listeners[action].push(listener);
   };
 }
 

@@ -7,10 +7,8 @@ class Sidebar {
     this.element = document.getElementById('sidebar');
     this.isViewingDetail = false;
 
-    window.store.subscribe(action => {
-      if (action.type === 'BOUNDS_CHANGE') {
+    window.store.on(BOUNDS_CHANGE, () => {
         this.fetchAndRenderItems();
-      }
     });
   }
 
