@@ -5,6 +5,7 @@ import { render } from './utils';
 class Sidebar {
   constructor() {
     this.element = document.getElementById('sidebar');
+    this.isViewingDetail = false;
 
     window.store.subscribe(action => {
       if (action.type === 'BOUNDS_CHANGE') {
@@ -20,7 +21,10 @@ class Sidebar {
 
     const url = '/api/properties/' + sw.toUrlValue() + '/' + ne.toUrlValue();
     this.page = await fetchJSON(url);
-    this.renderResults();
+
+    if (!this.isViewingDetail) {
+      this.renderResults();
+    }
   };
 
   renderResults = () => {
@@ -89,10 +93,12 @@ class Sidebar {
   };
 
   back = () => {
+    this.isViewingDetail = false;
     this.renderResults();
   };
 
   showDetail = async id => {
+    this.isViewingDetail = true;
     const property = await fetchJSON(`/api/properties/${id}`);
     render(this.element, this.renderDetail(property));
   };
