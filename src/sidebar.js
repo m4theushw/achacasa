@@ -305,12 +305,13 @@ class Sidebar {
   openCaixaWebsite = id => {
     const iframe = document.createElement('iframe');
     iframe.src =
-      'https://www1.caixa.gov.br/Simov/busca-imovel.asp?sltTipoBusca=imoveis';
+      'https://venda-imoveis.caixa.gov.br/sistema/busca-imovel.asp?sltTipoBusca=imoveis';
     iframe.style.display = 'none';
     document.body.appendChild(iframe);
 
     const form = document.createElement('form');
-    form.action = 'https://www1.caixa.gov.br/Simov/detalhe-imovel.asp';
+    form.action =
+      'https://venda-imoveis.caixa.gov.br/sistema/detalhe-imovel.asp';
     form.method = 'POST';
     form.target = '_blank';
 
