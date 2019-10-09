@@ -1,7 +1,7 @@
 import { BOUNDS_CHANGE, VIEW_MORE_CLICK } from './actions';
 import { debounce } from 'lodash';
 import { fetchJSON } from './utils';
-import { MARKER_CLICK, RESULT_CLICK } from './actions';
+import { MARKER_CLICK, RESULT_CLICK, CITY_CLICK } from './actions';
 
 class Map {
   constructor() {
@@ -12,6 +12,11 @@ class Map {
 
     window.store.on(RESULT_CLICK, ({ payload }) => {
       this.openInfowindow(payload);
+    });
+
+    window.store.on(CITY_CLICK, ({ payload }) => {
+      this.map.setCenter({ lat: payload.latitude, lng: payload.longitude });
+      this.map.setZoom(12);
     });
   }
 

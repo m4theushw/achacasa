@@ -1,3 +1,4 @@
+import { debounce } from 'lodash';
 import { fetchJSON, render } from './utils';
 
 class Autocomplete {
@@ -8,8 +9,7 @@ class Autocomplete {
     window.addEventListener('click', this.handleClick);
   }
 
-  handleKeyup = event => {
-    const _ = this;
+  handleKeyup = debounce(event => {
     const text = event.target.value;
 
     if (text.length < 3) {
@@ -17,15 +17,8 @@ class Autocomplete {
       return;
     }
 
-    if (this.timerId) {
-      clearTimeout(this.timerId);
-      this.timerId = null;
-    }
-
-    this.timerId = setTimeout(() => {
-      _.fetchItemsAndRenderOptions(text);
-    }, 200);
-  };
+    this.fetchItemsAndRenderOptions(text);
+  }, 200);
 
   handleClick = event => {
     if (this.autocomplete && !this.autocomplete.contains(event.target)) {
@@ -33,16 +26,16 @@ class Autocomplete {
     }
   };
 
-  fetchItemsAndRenderOptions = text => {
-    this.fetchItems(text).then(items => {
-      if (!items.length) {
-        this.closeDropdownIfExists();
-        return;
-      }
+  fetchItemsAndRenderOptions = async text => {
+    const items = await this.fetchItems(text);
 
-      this.createDropdownIfNotExists();
-      render(this.autocomplete, this.renderItems(items));
-    });
+    if (!items.length) {
+      this.closeDropdownIfExists();
+      return;
+    }
+
+    this.createDropdownIfNotExists();
+    render(this.autocomplete, this.renderItems(items));
   };
 
   fetchItems = text => fetchJSON(this.options.url(text));

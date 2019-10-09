@@ -34,38 +34,40 @@
         <button class="header-about">Sobre</button>
       </div>
       <nav class="navbar">
-        <div class="field" id="city-field">
-          <label for="city" class="field-label">Cidade</label>
-          <input type="text" id="city" name="city" class="field-control" placeholder="Pesquise uma cidade...">
-        </div>
-        <div class="field">
-          <label class="field-label">Tipo</label>
-          <select class="field-control" id="type">
-            <option value="" selected>Todos</option>
-            <option value="Apartamento">Apartamento</option>
-            <option value="Casa">Casa</option>
-            <option value="Comercial">Comercial</option>
-            <option value="Loja">Loja</option>
-            <option value="Outros">Outros</option>
-            <option value="Prédio">Prédio</option>
-            <option value="Sala">Sala</option>
-            <option value="Sobrado">Sobrado</option>
-            <option value="Terreno">Terreno</option>
-          </select>
-          <span class="field-caret">
-            <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-              <path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path>
-            </svg>
-          </span>
-        </div>
-        <div class="field">
-          <div class="field-checkbox">
-            <input class="field-checkbox-input" type="checkbox" name="vacant" id="vacant">
-            <label class="field-checkbox-label" for="vacant">
-              Apenas imóveis desocupados
-            </label>
+        <form autocomplete="off">
+          <div class="field" id="city-field">
+            <label for="city" class="field-label">Cidade</label>
+            <input type="text" id="city" name="city" class="field-control" placeholder="Pesquise uma cidade...">
           </div>
-        </div>
+          <div class="field">
+            <label class="field-label">Tipo</label>
+            <select class="field-control" id="type">
+              <option value="" selected>Todos</option>
+              <option value="Apartamento">Apartamento</option>
+              <option value="Casa">Casa</option>
+              <option value="Comercial">Comercial</option>
+              <option value="Loja">Loja</option>
+              <option value="Outros">Outros</option>
+              <option value="Prédio">Prédio</option>
+              <option value="Sala">Sala</option>
+              <option value="Sobrado">Sobrado</option>
+              <option value="Terreno">Terreno</option>
+            </select>
+            <span class="field-caret">
+              <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path>
+              </svg>
+            </span>
+          </div>
+          <div class="field">
+            <div class="field-checkbox">
+              <input class="field-checkbox-input" type="checkbox" name="vacant" id="vacant">
+              <label class="field-checkbox-label" for="vacant">
+                Apenas imóveis desocupados
+              </label>
+            </div>
+          </div>
+        </form>
       </nav>
       <div class="content">
         <div class="sidebar" id="sidebar" style="display: none">
