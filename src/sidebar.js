@@ -1,14 +1,44 @@
 import { fetchJSON } from './utils';
 import { currency, area } from './masks';
 import { render } from './utils';
+import { BOUNDS_CHANGE, TOGGLE_SIDEBAR } from './actions';
+
+const desktopMq = window.matchMedia('(min-width: 600px)');
 
 class Sidebar {
   constructor() {
-    this.element = document.getElementById('sidebar');
     this.isViewingDetail = false;
+    this.wrapper = document.getElementById('sidebar');
+    this.content = document.querySelector('.sidebar-content');
+    this.inner = document.querySelector('.sidebar-inner');
+
+    if (desktopMq.matches) {
+      this.open();
+    }
 
     window.store.on(BOUNDS_CHANGE, () => {
-        this.fetchAndRenderItems();
+      this.fetchAndRenderItems();
+    });
+
+    window.store.on(TOGGLE_SIDEBAR, () => {
+      if (this.isOpen) {
+        this.close();
+      } else {
+        this.open();
+      }
+    });
+
+    window.onresize = () => {
+      if (desktopMq.matches) {
+        this.open();
+      }
+    };
+
+    document.body.addEventListener('click', e => {
+      const sidebarInner = this.wrapper.querySelector('.sidebar-inner');
+      if (e.clientX > sidebarInner.clientWidth && !desktopMq.matches) {
+        this.close();
+      }
     });
   }
 
@@ -29,7 +59,7 @@ class Sidebar {
     const { results, next, previous } = this.page;
 
     render(
-      this.element,
+      this.content,
       results.length ? (
         <div>
           <ul class="results">{results.map(this.renderResult)}</ul>
@@ -80,6 +110,24 @@ class Sidebar {
     );
   };
 
+  open = () => {
+    this.isOpen = true;
+    this.wrapper.style.display = 'block';
+
+    setTimeout(() => {
+      this.wrapper.classList.add('sidebar-open');
+    });
+  };
+
+  close = () => {
+    this.isOpen = false;
+    this.wrapper.classList.remove('sidebar-open');
+
+    setTimeout(() => {
+      this.wrapper.style.display = 'none';
+    }, 200);
+  };
+
   prevPage = async () => {
     this.page = await fetchJSON(this.page.previous);
     this.renderResults();
@@ -98,7 +146,7 @@ class Sidebar {
   showDetail = async id => {
     this.isViewingDetail = true;
     const property = await fetchJSON(`/api/properties/${id}`);
-    render(this.element, this.renderDetail(property));
+    render(this.content, this.renderDetail(property));
   };
 
   renderDetail = property => {
