@@ -1,7 +1,7 @@
 class Store {
-  constructor(reducer) {
+  constructor(reducer, initialState = {}) {
     this.listeners = {};
-    this.state = {};
+    this.state = initialState;
     this.reducer = reducer;
   }
 

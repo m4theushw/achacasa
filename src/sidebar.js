@@ -1,4 +1,5 @@
 import { fetchJSON } from './utils';
+import { stringify } from 'query-string';
 import { currency, area } from './masks';
 import { render } from './utils';
 import {
@@ -7,6 +8,7 @@ import {
   MARKER_CLICK,
   VIEW_MORE_CLICK,
   RESULT_CLICK,
+  FILTER_CHANGE,
 } from './actions';
 
 const desktopMq = window.matchMedia('(min-width: 600px)');
@@ -23,6 +25,10 @@ class Sidebar {
     }
 
     window.store.on(BOUNDS_CHANGE, () => {
+      this.fetchAndRenderItems();
+    });
+
+    window.store.on(FILTER_CHANGE, () => {
       this.fetchAndRenderItems();
     });
 
@@ -59,16 +65,31 @@ class Sidebar {
   }
 
   fetchAndRenderItems = async () => {
-    const { bounds } = window.store.state;
+    const { bounds, filter } = window.store.state;
     const ne = bounds.getNorthEast();
     const sw = bounds.getSouthWest();
 
-    const url = '/api/properties/' + sw.toUrlValue() + '/' + ne.toUrlValue();
+    const params = stringify(this.createParamsForServer(filter));
+    const url = `/api/properties/${sw.toUrlValue()}/${ne.toUrlValue()}?${params}`;
     this.page = await fetchJSON(url);
 
     if (!this.isViewingDetail) {
       this.renderResults();
     }
+  };
+
+  createParamsForServer = filter => {
+    const params = {};
+
+    if (filter.type) {
+      params.type = filter.type;
+    }
+
+    if (filter.vacant) {
+      params.vacant = '✓';
+    }
+
+    return params;
   };
 
   renderResults = () => {

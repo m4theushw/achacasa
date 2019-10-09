@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 
 import Map from './map';
 import Sidebar from './sidebar';
+import Navbar from './navbar';
 import Store from './store';
 import { jsxToDom } from './utils';
 import reducer from './reducer';
@@ -12,7 +13,8 @@ import './fontawesome.css';
 
 window.jsxToDom = jsxToDom;
 
-window.store = new Store(reducer);
+const initialState = { filter: {} };
+window.store = new Store(reducer, initialState);
 
 function initApp() {
   const toggle = document.getElementById('toggle');
@@ -22,6 +24,7 @@ function initApp() {
 
   new Map();
   new Sidebar();
+  new Navbar();
 }
 
 google.maps.event.addDomListener(window, 'load', initApp);

@@ -62,9 +62,9 @@ class PropertyListView(ListAPIView):
         if type is not None:
             filters['type'] = type
 
-        occupied = self.request.query_params.get('occupied', None) == '✔'
-        if occupied:
-            filters['is_occupied'] = True
+        vacant = self.request.query_params.get('vacant', None) == '✓'
+        if vacant:
+            filters['is_occupied'] = False
 
         return Property.objects.filter(**filters).prefetch_related('city')
 
