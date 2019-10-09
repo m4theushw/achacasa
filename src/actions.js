@@ -2,3 +2,4 @@ export const BOUNDS_CHANGE = 'BOUNDS_CHANGE';
 export const MARKER_CLICK = 'MARKER_CLICK';
 export const VIEW_MORE_CLICK = 'VIEW_MORE_CLICK';
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
+export const RESULT_CLICK = 'RESULT_CLICK';

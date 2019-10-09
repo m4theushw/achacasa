@@ -6,6 +6,7 @@ import {
   TOGGLE_SIDEBAR,
   MARKER_CLICK,
   VIEW_MORE_CLICK,
+  RESULT_CLICK,
 } from './actions';
 
 const desktopMq = window.matchMedia('(min-width: 600px)');
@@ -165,6 +166,7 @@ class Sidebar {
 
     this.isViewingDetail = true;
     const property = await fetchJSON(`/api/properties/${id}`);
+    window.store.dispatch({ type: RESULT_CLICK, payload: property });
     render(this.content, this.renderDetail(property));
   };
 

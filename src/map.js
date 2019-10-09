@@ -1,7 +1,7 @@
 import { BOUNDS_CHANGE, VIEW_MORE_CLICK } from './actions';
 import { debounce } from 'lodash';
 import { fetchJSON } from './utils';
-import { MARKER_CLICK } from './actions';
+import { MARKER_CLICK, RESULT_CLICK } from './actions';
 
 class Map {
   constructor() {
@@ -9,6 +9,10 @@ class Map {
     this.infowindow = new google.maps.InfoWindow();
     this.initMap();
     this.centerMapOnUser();
+
+    window.store.on(RESULT_CLICK, ({ payload }) => {
+      this.openInfowindow(payload);
+    });
   }
 
   initMap = () => {
@@ -56,14 +60,14 @@ class Map {
     });
 
     marker.addListener('click', () => {
-      this.openDetail(property);
+      this.openInfowindow(property);
       window.store.dispatch({ type: MARKER_CLICK, payload: property });
     });
 
     return marker;
   };
 
-  openDetail = property => {
+  openInfowindow = property => {
     const viewMore = () => {
       window.store.dispatch({ type: VIEW_MORE_CLICK, payload: property });
     };

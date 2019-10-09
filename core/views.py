@@ -46,7 +46,7 @@ class MarkerListView(ListAPIView):
 
     def get_queryset(self):
         filters = build_filters(**self.kwargs)
-        return Property.objects.filter(**filters)[:100]
+        return Property.objects.filter(**filters).order_by('-id')[:100]
 
 class PropertyPagination(CursorPagination):
     ordering = '-id'
