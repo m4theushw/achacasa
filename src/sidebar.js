@@ -1,7 +1,12 @@
 import { fetchJSON } from './utils';
 import { currency, area } from './masks';
 import { render } from './utils';
-import { BOUNDS_CHANGE, TOGGLE_SIDEBAR } from './actions';
+import {
+  BOUNDS_CHANGE,
+  TOGGLE_SIDEBAR,
+  MARKER_CLICK,
+  VIEW_MORE_CLICK,
+} from './actions';
 
 const desktopMq = window.matchMedia('(min-width: 600px)');
 
@@ -26,6 +31,16 @@ class Sidebar {
       } else {
         this.open();
       }
+    });
+
+    window.store.on(MARKER_CLICK, ({ payload }) => {
+      if (desktopMq.matches) {
+        this.showDetail(payload.id);
+      }
+    });
+
+    window.store.on(VIEW_MORE_CLICK, ({ payload }) => {
+      this.showDetail(payload.id);
     });
 
     window.onresize = () => {
@@ -144,6 +159,10 @@ class Sidebar {
   };
 
   showDetail = async id => {
+    if (!this.isOpen) {
+      this.open();
+    }
+
     this.isViewingDetail = true;
     const property = await fetchJSON(`/api/properties/${id}`);
     render(this.content, this.renderDetail(property));
