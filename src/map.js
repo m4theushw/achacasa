@@ -1,4 +1,4 @@
-import { BOUNDS_CHANGE, VIEW_MORE_CLICK } from './actions';
+import { BOUNDS_CHANGE, VIEW_MORE_CLICK, FILTER_CHANGE } from './actions';
 import { debounce } from 'lodash';
 import { fetchJSON } from './utils';
 import { MARKER_CLICK, RESULT_CLICK, CITY_CLICK } from './actions';
@@ -6,6 +6,7 @@ import { MARKER_CLICK, RESULT_CLICK, CITY_CLICK } from './actions';
 class Map {
   constructor() {
     this.markers = {};
+    this.properties = [];
     this.infowindow = new google.maps.InfoWindow();
     this.initMap();
     this.centerMapOnUser();
@@ -17,6 +18,10 @@ class Map {
     window.store.on(CITY_CLICK, ({ payload }) => {
       this.map.setCenter({ lat: payload.latitude, lng: payload.longitude });
       this.map.setZoom(12);
+    });
+
+    window.store.on(FILTER_CHANGE, () => {
+      this.updateVisibleMarkers();
     });
   }
 
@@ -46,14 +51,20 @@ class Map {
   loadMarkers = async bounds => {
     const ne = bounds.getNorthEast();
     const sw = bounds.getSouthWest();
+
     const url = '/api/markers/' + sw.toUrlValue() + '/' + ne.toUrlValue();
     const properties = await fetchJSON(url);
+
     const propertiesNotAddedToMap = properties.filter(
       ({ id }) => !(id in this.markers)
     );
+
     propertiesNotAddedToMap.forEach(property => {
+      this.properties.push(property);
       this.markers[property.id] = this.createMarker(property);
     });
+
+    this.updateVisibleMarkers();
   };
 
   createMarker = property => {
@@ -88,6 +99,21 @@ class Map {
 
     this.infowindow.setContent(content);
     this.infowindow.open(this.map, this.markers[property.id]);
+  };
+
+  updateVisibleMarkers = () => {
+    const { filter } = window.store.state;
+
+    const visible = property => {
+      if (filter.type && filter.type !== property.type) return false;
+      if (filter.vacant && property.is_occupied) return false;
+      return true;
+    };
+
+    this.properties.forEach(property => {
+      const marker = this.markers[property.id];
+      marker.setVisible(visible(property));
+    });
   };
 }
 
