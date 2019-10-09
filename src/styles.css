@@ -525,6 +525,10 @@ button {
   background-color: #f7f7f7;
 }
 
+.detail {
+  padding-bottom: 20px;
+}
+
 .detail h1 {
   font-size: 1.2em;
 }
