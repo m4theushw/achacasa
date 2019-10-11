@@ -3,22 +3,14 @@ version: '3.1'
 services:
   db:
     image: mariadb
+    container_name: achacasa_db
     environment:
       MYSQL_USER: ${DB_USER}
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-    ports:
-      - '3306:3306'
     volumes:
       - dbdata:/var/lib/mysql
-
-  adminer:
-    image: adminer
-    ports:
-      - '8080:8080'
-    links:
-      - db
 
 volumes:
   dbdata:

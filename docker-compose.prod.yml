@@ -3,23 +3,26 @@ version: '3.1'
 services:
   db:
     restart: always
-
-  adminer:
-    restart: always
+    networks:
+      - default
+      - db-net
 
   nginx:
     image: nginx
+    container_name: achacasa_nginx
     restart: always
-    ports:
-      - '8000:8000'
     volumes:
       - ./config:/etc/nginx/conf.d
       - staticfiles:/static
     depends_on:
       - web
+    labels:
+      - 'traefik.http.routers.achacasa_nginx.rule=Host(`achacasa.online`)'
+      - 'traefik.enable=true'
 
   web:
     build: .
+    container_name: achacasa_web
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -31,3 +34,7 @@ services:
 
 volumes:
   staticfiles:
+
+networks:
+  db-net:
+    external: true
