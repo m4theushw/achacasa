@@ -5,5 +5,6 @@ const LiveReloadPlugin = require('webpack-livereload-plugin');
 module.exports = merge(common, {
   mode: 'development',
   watch: true,
+  devtool: 'inline-source-map',
   plugins: [new LiveReloadPlugin()],
 });
