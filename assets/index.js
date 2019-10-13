@@ -1,4 +1,3 @@
-import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 import Map from './map';
@@ -9,6 +8,7 @@ import Modal from './modal';
 import { jsxToDom } from './utils';
 import reducer from './reducer';
 import { TOGGLE_SIDEBAR } from './actions';
+
 import './styles.css';
 import './fontawesome.css';
 

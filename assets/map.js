@@ -1,5 +1,5 @@
 import { BOUNDS_CHANGE, VIEW_MORE_CLICK, FILTER_CHANGE } from './actions';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { fetchJSON } from './utils';
 import { MARKER_CLICK, RESULT_CLICK, CITY_CLICK } from './actions';
 

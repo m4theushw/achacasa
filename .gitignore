@@ -1,6 +1,5 @@
 __pycache__/
 node_modules/
-pages/static/
-static/
+assets/bundles/
 data/
 .env

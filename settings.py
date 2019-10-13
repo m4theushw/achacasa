@@ -141,6 +141,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'assets', 'bundles'),
+]
+
 # Django REST Framework
 
 REST_FRAMEWORK = {
