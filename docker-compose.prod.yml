@@ -4,8 +4,8 @@ services:
   db:
     restart: always
     networks:
-      - default
-      - db-net
+      - internal
+      - web
 
   nginx:
     image: nginx
@@ -14,17 +14,23 @@ services:
     volumes:
       - ./config:/etc/nginx/conf.d
       - staticfiles:/static
+    networks:
+      - internal
+      - web
     depends_on:
       - web
     labels:
       - 'traefik.http.routers.achacasa_nginx.rule=Host(`achacasa.online`)'
       - 'traefik.enable=true'
+      - 'traefik.docker.network=web'
 
   web:
     build: .
     container_name: achacasa_web
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
+    networks:
+      - internal
     volumes:
       - staticfiles:/code/static
     depends_on:
@@ -36,5 +42,7 @@ volumes:
   staticfiles:
 
 networks:
-  db-net:
+  web:
     external: true
+  internal:
+    external: false
