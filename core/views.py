@@ -1,3 +1,4 @@
+import re
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
@@ -50,6 +51,16 @@ class MarkerListView(ListAPIView):
 
 class PropertyPagination(CursorPagination):
     ordering = '-id'
+
+    def get_paginated_response(self, data):
+        regex = r'^(http|https):\/\/([^\/]+)'
+        next_link = self.get_next_link()
+        prev_link = self.get_previous_link()
+        return Response({
+            'next': re.sub(regex, '', next_link) if next_link else None,
+            'previous': re.sub(regex, '', prev_link) if prev_link else None,
+            'results': data
+        })
 
 class PropertyListView(ListAPIView):
     serializer_class = PropertyListSerializer
