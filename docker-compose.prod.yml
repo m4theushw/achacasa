@@ -35,6 +35,7 @@ services:
       - internal
     volumes:
       - staticfiles:/code/static
+      - ./data:/code/data
     depends_on:
       - db
     expose:
