@@ -20,7 +20,11 @@ services:
     depends_on:
       - web
     labels:
-      - 'traefik.http.routers.achacasa_nginx.rule=Host(`achacasa.online`)'
+      - 'traefik.http.routers.achacasa.rule=Host(`achacasa.online`)'
+      - 'traefik.http.routers.achacasa.entrypoints=web'
+      - 'traefik.http.routers.achacasa_secure.rule=Host(`achacasa.online`)'
+      - 'traefik.http.routers.achacasa_secure.tls.certresolver=achacasa'
+      - 'traefik.http.routers.achacasa_secure.entrypoints=websecure'
       - 'traefik.enable=true'
       - 'traefik.docker.network=web'
 
