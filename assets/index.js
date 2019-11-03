@@ -7,7 +7,7 @@ import Store from './store';
 import Modal from './modal';
 import { jsxToDom } from './utils';
 import reducer from './reducer';
-import { TOGGLE_SIDEBAR } from './actions';
+import { TOGGLE_SIDEBAR, PAGE_LOAD } from './actions';
 
 import './styles.css';
 import './fontawesome.css';
@@ -32,6 +32,12 @@ function initApp() {
   new Map();
   new Sidebar();
   new Navbar();
+
+  const { pathname } = location;
+  const match = pathname.match(/\/(\d+)/);
+  if (match) {
+    window.store.dispatch({ type: PAGE_LOAD, payload: match[1] });
+  }
 }
 
 google.maps.event.addDomListener(window, 'load', initApp);

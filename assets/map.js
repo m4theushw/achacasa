@@ -12,6 +12,7 @@ class Map {
     this.centerMapOnUser();
 
     window.store.on(RESULT_CLICK, ({ payload }) => {
+      this.createMarkerIfNonExists(payload);
       this.openInfowindow(payload);
     });
 
@@ -114,6 +115,14 @@ class Map {
       const marker = this.markers[property.id];
       marker.setVisible(visible(property));
     });
+  };
+
+  createMarkerIfNonExists = property => {
+    if (this.markers[property.id]) {
+      return;
+    }
+    this.properties.push(property);
+    this.markers[property.id] = this.createMarker(property);
   };
 }
 

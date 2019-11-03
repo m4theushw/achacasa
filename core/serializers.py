@@ -45,4 +45,4 @@ class PropertyDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Property
-        exclude = ('slug',)
+        exclude = []

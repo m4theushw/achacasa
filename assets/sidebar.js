@@ -9,6 +9,7 @@ import {
   VIEW_MORE_CLICK,
   RESULT_CLICK,
   FILTER_CHANGE,
+  PAGE_LOAD,
 } from './actions';
 
 const desktopMq = window.matchMedia('(min-width: 600px)');
@@ -48,6 +49,10 @@ class Sidebar {
 
     window.store.on(VIEW_MORE_CLICK, ({ payload }) => {
       this.showDetail(payload.id);
+    });
+
+    window.store.on(PAGE_LOAD, ({ payload }) => {
+      this.showDetail(payload);
     });
 
     window.onresize = () => {
@@ -139,9 +144,7 @@ class Sidebar {
       <li class="results-item" onClick={() => this.showDetail(property.id)}>
         <span class={`results-item-status ${statusClass}`}>{statusText}</span>
         <div class="results-item-name">{property.name}</div>
-        <div class="results-item-subline">{`${property.type} ∙ ${
-          property.city
-        }`}</div>
+        <div class="results-item-subline">{`${property.type} ∙ ${property.city}`}</div>
         <div class="results-item-value">{currency(value)}</div>
       </li>
     );
@@ -178,6 +181,7 @@ class Sidebar {
   back = () => {
     this.isViewingDetail = false;
     this.renderResults();
+    history.replaceState(null, '', '/');
   };
 
   showDetail = async id => {
@@ -187,6 +191,7 @@ class Sidebar {
 
     this.isViewingDetail = true;
     const property = await fetchJSON(`/api/properties/${id}`);
+    history.replaceState(null, property.name, property.slug);
     window.store.dispatch({ type: RESULT_CLICK, payload: property });
     render(this.content, this.renderDetail(property));
   };
@@ -208,9 +213,7 @@ class Sidebar {
         <div class="detail">
           <div class="detail-header">
             <h1 class="detail-header-name">{property.name}</h1>
-            <div class="detail-header-subline">{`${property.type} ∙ ${
-              property.city
-            } ∙ ${statusText}`}</div>
+            <div class="detail-header-subline">{`${property.type} ∙ ${property.city} ∙ ${statusText}`}</div>
           </div>
           <div class="detail-body">
             <p>{property.description}</p>

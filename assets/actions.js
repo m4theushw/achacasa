@@ -5,3 +5,4 @@ export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 export const RESULT_CLICK = 'RESULT_CLICK';
 export const CITY_CLICK = 'CITY_CLICK';
 export const FILTER_CHANGE = 'FILTER_CHANGE';
+export const PAGE_LOAD = 'PAGE_LOAD';
