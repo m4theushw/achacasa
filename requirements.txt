@@ -1,7 +1,7 @@
 beautifulsoup4==4.7.1
 certifi==2019.6.16
 chardet==3.0.4
-Django==2.2.4
+Django==2.2.8
 djangorestframework==3.9.3
 geographiclib==1.49
 gunicorn==19.9.0
