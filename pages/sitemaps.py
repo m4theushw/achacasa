@@ -19,4 +19,7 @@ class PropertySitemap(Sitemap):
     def location(self, obj):
         return '/' + obj.slug
 
+    def lastmod(self, obj):
+        return obj.created
+
 sitemaps = {state: PropertySitemap(state) for state in STATES}
